@@ -2,6 +2,7 @@
 import httpx
 import asyncio
 from bs4 import BeautifulSoup
+import json
 # headers = []
 URL = "https://www.google.com/search?q=Lundin+Canada+Mining&gl=us"
 async def get_organic_data():
@@ -26,7 +27,7 @@ async with httpx.AsyncClient() as client:
         })
         i+=1
         
-    print(organic_results)
+    print(json.dumps(organic_results, indent=2))
 
 await get_organic_data()
 
