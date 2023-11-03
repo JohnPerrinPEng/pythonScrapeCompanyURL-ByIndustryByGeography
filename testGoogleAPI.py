@@ -2,17 +2,17 @@ import requests
 import pandas as pd
 import csv
 
-API_KEY = "AIzaSyBhQRTi72A68uWHh-CpnDqq6mOgyDTbI6U"
-SEARCH_ENGINE_ID = "b4735cf32d7d746ee"
 
 
 
-df = pd.read_csv('20231031 1125  Canada Mining Company List 25 Only.csv', on_bad_lines='skip',names=["Search Term","Rank,"Title","Description","Long Description","URL"])
+
+df = pd.read_csv('20231031 1125  Canada Mining Company List 25 Only.csv', on_bad_lines='skip',names=["Search Term","Rank","Title","Description","Long Description","URL"])
 df = df.astype(str)
 keywords = "Canada Mining"
 for index,row in df.iterrows():
     df.at[index,'Search Term'] = df.at[index,'Search Term']+' Canada Mine Industry'
 print(df)
+
 
 for index,row in df.iterrows():
     # the search query you want
@@ -46,14 +46,14 @@ for index,row in df.iterrows():
         df.at[index,'URL'] = search_item.get("link")
         # print the results
         df.at[index,'Rank'] = i+1
-        print(df.iloc[])
+        print(df.iloc[index])
         # print("="*10, f"Result #{i+start-1}", "="*10)
         # print("Title:", title)
         # print("Description:", snippet)
         # print("Long description:", long_description)
         # print("URL:", link, "\n")
 
-
+df.to_excel('test_out.xlsx')
 
 # custom searchengineid b4735cf32d7d746ee
 # custom search key AIzaSyBhQRTi72A68uWHh-CpnDqq6mOgyDTbI6U
