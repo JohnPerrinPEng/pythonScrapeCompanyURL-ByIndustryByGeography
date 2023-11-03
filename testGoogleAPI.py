@@ -2,8 +2,10 @@ import requests
 import pandas as pd
 import csv
 
-
-
+file = open(r"C:\Users\jperrin\OneDrive\Documents\CODE\_Credentials\credentialsJPSearch-SearchEngineID.txt","r")
+SEARCH_ENGINE_ID=file.read()
+file = open(r"C:\Users\jperrin\OneDrive\Documents\CODE\_Credentials\credJPSearch-CustomSearchAPIKey.txt","r")
+API_KEY = file.read()
 
 
 df = pd.read_csv('20231031 1125  Canada Mining Company List 25 Only.csv', on_bad_lines='skip',names=["Search Term","Rank","Title","Description","Long Description","URL"])
