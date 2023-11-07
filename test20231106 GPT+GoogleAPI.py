@@ -5,6 +5,8 @@ import csv
 from datetime import datetime
 import backoff
 import time
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
 # @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=10)
 # def make_request(url):
@@ -42,24 +44,6 @@ import time
 #                 delay = 2 ** i
 #                 time.sleep(delay)
 
-# Try for new syntax on exception test
-def make_request_with_backoff(url, max_tries=10):
-    for i in range(max_tries):
-        try:
-            print("try loop"+ str(i))
-            response = requests.get(url)
-            print(response)
-            print(response.raise_for_status())
-            response.raise_for_status()
-            return response.json()
-        except ValueError:
-            print("exception loop" + str(i))
-            if i == max_tries - 1:
-                raise
-            else:
-                delay = 2 ** i
-                time.sleep(delay)
-
 # should work but doesn't
 # def make_request_with_backoff(url, max_tries=10):
 #     for i in range(max_tries):
@@ -75,7 +59,22 @@ def make_request_with_backoff(url, max_tries=10):
 #                 raise
 #             else:
 #                 delay = 2 ** i
-#                 time.sleep(delay)
+#                 time.sleep(delay)\
+
+def make_request_with_backoff(query,api_key,cse_id,max_tries=10):
+    service = build('customsearch', 'v1', developerKey=api_key)
+    try:
+        #Perform a search using the API
+        results = service.cse().list(q=query,cx=cse_id).execute()
+        #Process the search results
+        print('we got a live one one')
+        print(results)
+        return results.json()
+            
+    except HttpError as e:
+        print(f'API Error: {e}')
+    except Exception as e:
+        print(f'An error occured: {e}')
 
 file = open(r"C:\Users\perri\OneDrive\Documents\CODE\_Credentials\credentialsJPSearch-SearchEngineID.txt","r")
 SEARCH_ENGINE_ID=file.read()
@@ -109,11 +108,17 @@ with open(filename,'w',newline='') as f:
         start = (page - 1) * 10 + 1
         url = f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&start={start}"
         # make the API request
-        data = make_request_with_backoff(url)
+        data = make_request_with_backoff(url,API_KEY,SEARCH_ENGINE_ID,3)
         # data = requests.get(url).json()
 
+        # service = __build_class__('customsearch', 'v1', developerKey=API_KEY)
+        
+        
+
+
+
         # get the result items
-        search_items = data.get("items")
+        # search_items = data.get("items")
 
         # iterate over 10 results found
         for i, search_item in enumerate(search_items, start=1):
