@@ -12,11 +12,11 @@ API_KEY = file.read()
 file.close()
 
 
-df = pd.read_csv('20231031 1125  Canada Mining Company List 25 Only.csv', on_bad_lines='skip',names=["Search Term","Rank","Title","Description","Long Description","URL"])
+df = pd.read_csv('20231031 1125  Canada Mining+ Company List.csv', on_bad_lines='skip',names=["Search Term","Rank","Title","Description","Long Description","URL"])
 df = df.astype(str)
 keywords = "Canada Mining"
 for index,row in df.iterrows():
-    df.at[index,'Search Term'] = df.at[index,'Search Term']+' Canada Mine Industry'
+    df.at[index,'Search Term'] = df.at[index,'Search Term']+' Canada Mine Industry Homepage Home'
 # print(df)
 
 # create output file
@@ -54,7 +54,7 @@ with open(filename,'w',newline='') as f:
             # # alternatively, you can get the HTML snippet (bolded keywords)
             # html_snippet = search_item.get("htmlSnippet")
             # # extract the page url
-            url = search_item.get("link").strip()
+            url = search_item.get("link").encode('ascii','ignore')
 
             rank = i
 
